@@ -24,9 +24,9 @@ import com.jameskleeh.excel.style.ColumnCellRangeBorderStyleApplier
 import groovy.transform.CompileStatic
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy
 import org.apache.poi.ss.util.CellRangeAddress
-import org.apache.poi.xssf.streaming.SXSSFCell
-import org.apache.poi.xssf.streaming.SXSSFRow
-import org.apache.poi.xssf.streaming.SXSSFSheet
+import org.apache.poi.xssf.usermodel.XSSFCell
+import org.apache.poi.xssf.usermodel.XSSFRow
+import org.apache.poi.xssf.usermodel.XSSFSheet
 
 /**
  * A class designed to be a delegate when a column is created
@@ -40,19 +40,19 @@ class Column extends CreatesCells {
     private int columnIdx
     private int rowIdx
 
-    Column(SXSSFSheet sheet, Map defaultOptions, Map<Object, Integer> columnIndexes, CellStyleBuilder styleBuilder, int columnIdx, int rowIdx) {
+    Column(XSSFSheet sheet, Map defaultOptions, Map<Object, Integer> columnIndexes, CellStyleBuilder styleBuilder, int columnIdx, int rowIdx) {
         super(sheet, defaultOptions, columnIndexes, styleBuilder)
         this.columnIdx = columnIdx
         this.rowIdx = rowIdx
     }
 
     @Override
-    protected SXSSFCell nextCell() {
-        SXSSFRow row = sheet.getRow(rowIdx)
+    protected XSSFCell nextCell() {
+        XSSFRow row = sheet.getRow(rowIdx)
         if (row == null) {
             row = sheet.createRow(rowIdx)
         }
-        SXSSFCell cell = row.getCell(columnIdx, MissingCellPolicy.CREATE_NULL_AS_BLANK)
+        XSSFCell cell = row.getCell(columnIdx, MissingCellPolicy.CREATE_NULL_AS_BLANK)
         rowIdx++
         cell
     }
@@ -83,7 +83,7 @@ class Column extends CreatesCells {
     }
 
     @Override
-    protected CellRangeBorderStyleApplier getBorderStyleApplier(CellRangeAddress range, SXSSFSheet sheet) {
+    protected CellRangeBorderStyleApplier getBorderStyleApplier(CellRangeAddress range, XSSFSheet sheet) {
         new ColumnCellRangeBorderStyleApplier(range, sheet)
     }
 

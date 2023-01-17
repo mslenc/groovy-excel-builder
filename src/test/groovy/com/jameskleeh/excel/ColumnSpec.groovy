@@ -3,15 +3,15 @@ package com.jameskleeh.excel
 import org.apache.poi.common.usermodel.HyperlinkType
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.util.CellRangeAddress
-import org.apache.poi.xssf.streaming.SXSSFRow
-import org.apache.poi.xssf.streaming.SXSSFSheet
-import org.apache.poi.xssf.streaming.SXSSFWorkbook
+import org.apache.poi.xssf.usermodel.XSSFRow
+import org.apache.poi.xssf.usermodel.XSSFSheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import spock.lang.Specification
 
 class ColumnSpec extends Specification {
 
     void "test output by column"() {
-        SXSSFWorkbook workbook = ExcelBuilder.build {
+        XSSFWorkbook workbook = ExcelBuilder.build {
             sheet {
                 columns {
                     column('Column A1', 'id')
@@ -28,7 +28,7 @@ class ColumnSpec extends Specification {
         }
 
         when:
-        SXSSFSheet sheet = workbook.getSheetAt(0)
+        XSSFSheet sheet = workbook.getSheetAt(0)
 
         then:
         sheet.getRow(0).getCell(0).stringCellValue == 'Column A1'
@@ -41,7 +41,7 @@ class ColumnSpec extends Specification {
     }
 
     void "test merge"() {
-        SXSSFWorkbook workbook = ExcelBuilder.build {
+        XSSFWorkbook workbook = ExcelBuilder.build {
             sheet {
                 column {
 
@@ -68,7 +68,7 @@ class ColumnSpec extends Specification {
     }
 
     void "test skipCells"() {
-        SXSSFWorkbook workbook = ExcelBuilder.build {
+        XSSFWorkbook workbook = ExcelBuilder.build {
             sheet {
                 column {
                     cell('A1')
@@ -81,7 +81,7 @@ class ColumnSpec extends Specification {
         }
 
         when:
-        SXSSFSheet sheet = workbook.getSheetAt(0)
+        XSSFSheet sheet = workbook.getSheetAt(0)
 
         then:
         sheet.getRow(0).getCell(0).stringCellValue == 'A1'
@@ -91,7 +91,7 @@ class ColumnSpec extends Specification {
     }
 
     void "test link"() {
-        SXSSFWorkbook workbook = ExcelBuilder.build {
+        XSSFWorkbook workbook = ExcelBuilder.build {
             sheet('X') {
                 row {
                     link('Test URL', 'http://www.google.com', HyperlinkType.URL)
@@ -105,7 +105,7 @@ class ColumnSpec extends Specification {
         }
 
         when:
-        SXSSFRow row = workbook.getSheetAt(0).getRow(0)
+        XSSFRow row = workbook.getSheetAt(0).getRow(0)
         List<Cell> cells = row.cellIterator().toList()
 
         then:

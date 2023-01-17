@@ -28,12 +28,12 @@ import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.Font as FontType
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.VerticalAlignment
-import org.apache.poi.xssf.streaming.SXSSFCell
-import org.apache.poi.xssf.streaming.SXSSFRow
-import org.apache.poi.xssf.streaming.SXSSFWorkbook
+import org.apache.poi.xssf.usermodel.XSSFCell
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFFont
+import org.apache.poi.xssf.usermodel.XSSFRow
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide
 
 import java.awt.*
@@ -47,7 +47,7 @@ import java.awt.*
 @CompileStatic
 class CellStyleBuilder {
 
-    private final SXSSFWorkbook workbook
+    private final XSSFWorkbook workbook
     private final WorkbookCache workbookCache
 
     protected static final String FORMAT = 'format'
@@ -77,7 +77,7 @@ class CellStyleBuilder {
     protected static final String BACKGROUND_COLOR = 'backgroundColor'
     protected static final String FOREGROUND_COLOR = 'foregroundColor'
 
-    CellStyleBuilder(SXSSFWorkbook workbook) {
+    CellStyleBuilder(XSSFWorkbook workbook) {
         this.workbook = workbook
         workbookCache = new WorkbookCache(workbook)
     }
@@ -328,14 +328,14 @@ class CellStyleBuilder {
     }
 
     private void setForegroundColor(XSSFCellStyle cellStyle, Object foregroundColor) {
-        if (cellStyle.fillPatternEnum == FillPatternType.NO_FILL) {
+        if (cellStyle.fillPattern == FillPatternType.NO_FILL) {
             cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
         }
         cellStyle.setFillForegroundColor(getColor(foregroundColor))
     }
 
     private void setBackgroundColor(XSSFCellStyle cellStyle, Object backgroundColor) {
-        if (cellStyle.fillPatternEnum == FillPatternType.NO_FILL) {
+        if (cellStyle.fillPattern == FillPatternType.NO_FILL) {
             setForegroundColor(cellStyle, backgroundColor)
         } else {
             cellStyle.setFillBackgroundColor(getColor(backgroundColor))
@@ -424,7 +424,7 @@ class CellStyleBuilder {
      * @param _options A map of options for styling
      * @param defaultOptions A map of default options for styling
      */
-     void setStyle(Object value, SXSSFCell cell, Map options, Map defaultOptions = null) {
+     void setStyle(Object value, XSSFCell cell, Map options, Map defaultOptions = null) {
          XSSFCellStyle cellStyle = getStyle(value, options, defaultOptions)
          if (cellStyle != null) {
              cell.cellStyle = cellStyle
@@ -438,7 +438,7 @@ class CellStyleBuilder {
      * @param _options A map of options for styling
      * @param defaultOptions A map of default options for styling
      */
-    void setStyle(SXSSFRow row, Map options, Map defaultOptions = null) {
+    void setStyle(XSSFRow row, Map options, Map defaultOptions = null) {
         XSSFCellStyle cellStyle = getStyle(null, options, defaultOptions)
         if (cellStyle != null) {
             row.setRowStyle(cellStyle)

@@ -20,7 +20,7 @@ package com.jameskleeh.excel
 
 import groovy.transform.CompileStatic
 import org.apache.poi.ss.util.CellReference
-import org.apache.poi.xssf.streaming.SXSSFCell
+import org.apache.poi.xssf.usermodel.XSSFCell
 
 /**
  * A class to get references to cells for use in other functions
@@ -31,10 +31,10 @@ import org.apache.poi.xssf.streaming.SXSSFCell
 @CompileStatic
 class CellFinder {
 
-    private final SXSSFCell cell
+    private final XSSFCell cell
     private final Map<Object, Integer> columnIndexes
 
-    CellFinder(SXSSFCell cell, Map<Object, Integer> columnIndexes) {
+    CellFinder(XSSFCell cell, Map<Object, Integer> columnIndexes) {
         this.cell = cell
         this.columnIndexes = columnIndexes
     }

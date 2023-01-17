@@ -8,9 +8,9 @@ import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.ss.util.CellUtil
-import org.apache.poi.xssf.streaming.SXSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFColor
+import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide
 
 /**
@@ -31,7 +31,7 @@ abstract class CellRangeBorderStyleApplier implements BorderStyleApplier {
     protected XSSFCellStyle middle
     protected XSSFCellStyle bottomRight
 
-    CellRangeBorderStyleApplier(CellRangeAddress range, SXSSFSheet sheet) {
+    CellRangeBorderStyleApplier(CellRangeAddress range, XSSFSheet sheet) {
         this.range = range
         this.sheet = sheet
         leftTop = (XSSFCellStyle) sheet.workbook.createCellStyle()

@@ -4,9 +4,9 @@ import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.VerticalAlignment
-import org.apache.poi.xssf.streaming.SXSSFCell
-import org.apache.poi.xssf.streaming.SXSSFWorkbook
+import org.apache.poi.xssf.usermodel.XSSFCell
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import spock.lang.Specification
 
 import java.awt.*
@@ -23,7 +23,7 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test convertSimpleOptions"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         Map<String, Object> options = [border: BorderStyle.DASHED]
 
         when:
@@ -77,7 +77,7 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle format"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
         Excel.registerCellFormat(String, 'bar')
 
@@ -108,7 +108,7 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle font"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when:
@@ -223,7 +223,7 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle hidden"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when:
@@ -247,7 +247,7 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle locked"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when:
@@ -271,7 +271,7 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle wrapped"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when:
@@ -295,20 +295,20 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle horizontal alignment"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when:
         cellStyle = cellStyleBuilder.buildStyle('', [alignment: HorizontalAlignment.RIGHT])
 
         then:
-        cellStyle.alignmentEnum == HorizontalAlignment.RIGHT
+        cellStyle.alignment == HorizontalAlignment.RIGHT
 
         when:
         cellStyle = cellStyleBuilder.buildStyle('', [alignment: 'right'])
 
         then:
-        cellStyle.alignmentEnum == HorizontalAlignment.RIGHT
+        cellStyle.alignment == HorizontalAlignment.RIGHT
 
         when:
         cellStyle = cellStyleBuilder.buildStyle('', [alignment: 'x'])
@@ -325,20 +325,20 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle vertical alignment"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when:
         cellStyle = cellStyleBuilder.buildStyle('', [verticalAlignment: VerticalAlignment.TOP])
 
         then:
-        cellStyle.verticalAlignmentEnum == VerticalAlignment.TOP
+        cellStyle.verticalAlignment == VerticalAlignment.TOP
 
         when:
         cellStyle = cellStyleBuilder.buildStyle('', [verticalAlignment: 'top'])
 
         then:
-        cellStyle.verticalAlignmentEnum == VerticalAlignment.TOP
+        cellStyle.verticalAlignment == VerticalAlignment.TOP
 
         when:
         cellStyle = cellStyleBuilder.buildStyle('', [verticalAlignment: 'x'])
@@ -355,7 +355,7 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle rotation"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when:
@@ -379,7 +379,7 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle indention"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when:
@@ -403,7 +403,7 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle border"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when:
@@ -417,26 +417,26 @@ class CellStyleBuilderSpec extends Specification {
         byte[] color = [255, 0, 0] as byte[]
 
         then:
-        cellStyle.borderLeftEnum == BorderStyle.DOTTED
+        cellStyle.borderLeft == BorderStyle.DOTTED
         cellStyle.leftBorderXSSFColor.RGB == color
-        cellStyle.borderRightEnum == BorderStyle.DOTTED
+        cellStyle.borderRight == BorderStyle.DOTTED
         cellStyle.rightBorderXSSFColor.RGB == color
-        cellStyle.borderBottomEnum == BorderStyle.DOTTED
+        cellStyle.borderBottom == BorderStyle.DOTTED
         cellStyle.bottomBorderXSSFColor.RGB == color
-        cellStyle.borderTopEnum == BorderStyle.DOTTED
+        cellStyle.borderTop == BorderStyle.DOTTED
         cellStyle.topBorderXSSFColor.RGB == color
 
         when:
         cellStyle = cellStyleBuilder.buildStyle('', [border: [style: BorderStyle.DOTTED, color: Color.RED, left: [color: Color.BLUE], right: [style: BorderStyle.DASHED], bottom: [color: 'FFFFFF'], top: [color: '#000000']]])
 
         then:
-        cellStyle.borderLeftEnum == BorderStyle.DOTTED
+        cellStyle.borderLeft == BorderStyle.DOTTED
         cellStyle.leftBorderXSSFColor.RGB == [0, 0, 255] as byte[]
-        cellStyle.borderRightEnum == BorderStyle.DASHED
+        cellStyle.borderRight == BorderStyle.DASHED
         cellStyle.rightBorderXSSFColor.RGB == [255, 0, 0] as byte[]
-        cellStyle.borderBottomEnum == BorderStyle.DOTTED
+        cellStyle.borderBottom == BorderStyle.DOTTED
         cellStyle.bottomBorderXSSFColor.RGB == [255, 255, 255] as byte[]
-        cellStyle.borderTopEnum == BorderStyle.DOTTED
+        cellStyle.borderTop == BorderStyle.DOTTED
         cellStyle.topBorderXSSFColor.RGB == [0, 0, 0] as byte[]
 
         when:
@@ -445,34 +445,34 @@ class CellStyleBuilderSpec extends Specification {
         cellStyle = cellStyleBuilder.buildStyle('', options)
 
         then:
-        cellStyle.borderLeftEnum == BorderStyle.THIN
-        cellStyle.borderRightEnum == BorderStyle.DOTTED
-        cellStyle.borderBottomEnum == BorderStyle.DOTTED
-        cellStyle.borderTopEnum == BorderStyle.DOTTED
+        cellStyle.borderLeft == BorderStyle.THIN
+        cellStyle.borderRight == BorderStyle.DOTTED
+        cellStyle.borderBottom == BorderStyle.DOTTED
+        cellStyle.borderTop == BorderStyle.DOTTED
     }
 
     void "test buildStyle fill"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when:
         cellStyle = cellStyleBuilder.buildStyle('', [:])
 
         then:
-        cellStyle.fillPatternEnum == FillPatternType.NO_FILL
+        cellStyle.fillPattern == FillPatternType.NO_FILL
 
         when:
         cellStyle = cellStyleBuilder.buildStyle('', [fill: FillPatternType.DIAMONDS])
 
         then:
-        cellStyle.fillPatternEnum == FillPatternType.DIAMONDS
+        cellStyle.fillPattern == FillPatternType.DIAMONDS
 
         when:
         cellStyle = cellStyleBuilder.buildStyle('', [fill: 'diamonds'])
 
         then:
-        cellStyle.fillPatternEnum == FillPatternType.DIAMONDS
+        cellStyle.fillPattern == FillPatternType.DIAMONDS
 
         when:
         cellStyle = cellStyleBuilder.buildStyle('', [fill: 'x'])
@@ -489,7 +489,7 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle foreground color"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when:
@@ -519,7 +519,7 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test buildStyle background color"() {
         given:
-        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new SXSSFWorkbook())
+        CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(new XSSFWorkbook())
         XSSFCellStyle cellStyle
 
         when: 'Only the background color is specified'
@@ -528,7 +528,7 @@ class CellStyleBuilderSpec extends Specification {
         then: 'The foreground color is set instead of the background and the fill pattern is set to solid'
         cellStyle.fillForegroundXSSFColor.RGB == [255, 0, 0] as byte[]
         cellStyle.fillBackgroundXSSFColor == null
-        cellStyle.fillPatternEnum == FillPatternType.SOLID_FOREGROUND
+        cellStyle.fillPattern == FillPatternType.SOLID_FOREGROUND
 
         when: 'Both the foreground and background colors are specified'
         cellStyle = cellStyleBuilder.buildStyle('', [foregroundColor: Color.BLUE, backgroundColor: Color.RED])
@@ -557,7 +557,7 @@ class CellStyleBuilderSpec extends Specification {
     }
 
     void "test getStyle pulls from cache"() {
-        SXSSFWorkbook workbook = new SXSSFWorkbook()
+        XSSFWorkbook workbook = new XSSFWorkbook()
         CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(workbook)
 
         when:
@@ -571,12 +571,12 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test setStyle cell no options"() {
         given:
-        SXSSFWorkbook workbook = new SXSSFWorkbook()
+        XSSFWorkbook workbook = new XSSFWorkbook()
         CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(workbook)
-        SXSSFCell defaultCell = workbook.createSheet().createRow(0).createCell(0)
+        XSSFCell defaultCell = workbook.createSheet().createRow(0).createCell(0)
 
         when:
-        SXSSFCell cell = defaultCell.row.createCell(1)
+        XSSFCell cell = defaultCell.row.createCell(1)
         cellStyleBuilder.setStyle('', cell, null)
 
         then:
@@ -585,12 +585,12 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test setStyle cell options"() {
         given:
-        SXSSFWorkbook workbook = new SXSSFWorkbook()
+        XSSFWorkbook workbook = new XSSFWorkbook()
         CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(workbook)
-        SXSSFCell defaultCell = workbook.createSheet().createRow(0).createCell(0)
+        XSSFCell defaultCell = workbook.createSheet().createRow(0).createCell(0)
 
         when:
-        SXSSFCell cell = defaultCell.row.createCell(1)
+        XSSFCell cell = defaultCell.row.createCell(1)
         cellStyleBuilder.setStyle('', cell, [font: Font.ITALIC])
 
         then:
@@ -599,33 +599,33 @@ class CellStyleBuilderSpec extends Specification {
 
     void "test setStyle cell options are merged"() {
         given:
-        SXSSFWorkbook workbook = new SXSSFWorkbook()
+        XSSFWorkbook workbook = new XSSFWorkbook()
         CellStyleBuilder cellStyleBuilder = new CellStyleBuilder(workbook)
-        SXSSFCell defaultCell = workbook.createSheet().createRow(0).createCell(0)
+        XSSFCell defaultCell = workbook.createSheet().createRow(0).createCell(0)
 
         when:
-        SXSSFCell cell = defaultCell.row.createCell(1)
+        XSSFCell cell = defaultCell.row.createCell(1)
         cellStyleBuilder.setStyle('', cell, [font: Font.ITALIC, border: [left: BorderStyle.DOUBLE]], [font: Font.BOLD, border: BorderStyle.DASH_DOT])
         XSSFCellStyle style = cell.cellStyle
 
         then:
         style.font.italic
         !style.font.bold
-        style.borderLeftEnum == BorderStyle.DOUBLE
-        style.borderTopEnum == BorderStyle.DASH_DOT
-        style.borderRightEnum == BorderStyle.DASH_DOT
-        style.borderBottomEnum == BorderStyle.DASH_DOT
+        style.borderLeft == BorderStyle.DOUBLE
+        style.borderTop == BorderStyle.DASH_DOT
+        style.borderRight == BorderStyle.DASH_DOT
+        style.borderBottom == BorderStyle.DASH_DOT
     }
 
     void "test merging of options with rows"() {
         given:
-        SXSSFCell testCellLeft
-        SXSSFCell testCellMiddle
-        SXSSFCell testCellMiddle2
-        SXSSFCell testCellRight
-        SXSSFCell testCell2
-        SXSSFCell testCell3
-        SXSSFCell testCell4
+        XSSFCell testCellLeft
+        XSSFCell testCellMiddle
+        XSSFCell testCellMiddle2
+        XSSFCell testCellRight
+        XSSFCell testCell2
+        XSSFCell testCell3
+        XSSFCell testCell4
 
         ExcelBuilder.build {
             sheet {
@@ -661,49 +661,49 @@ class CellStyleBuilderSpec extends Specification {
         XSSFCellStyle style4 = testCell4.cellStyle //none
 
         then:
-        mergeLeft.borderLeftEnum == BorderStyle.HAIR
-        mergeLeft.borderTopEnum == BorderStyle.MEDIUM
-        mergeLeft.borderRightEnum == BorderStyle.NONE
-        mergeLeft.borderBottomEnum == BorderStyle.MEDIUM
+        mergeLeft.borderLeft == BorderStyle.HAIR
+        mergeLeft.borderTop == BorderStyle.MEDIUM
+        mergeLeft.borderRight == BorderStyle.NONE
+        mergeLeft.borderBottom == BorderStyle.MEDIUM
 
-        mergeMiddle.borderLeftEnum == BorderStyle.NONE
-        mergeMiddle.borderRightEnum == BorderStyle.NONE
-        mergeMiddle.borderTopEnum == BorderStyle.MEDIUM
-        mergeMiddle.borderBottomEnum == BorderStyle.MEDIUM
+        mergeMiddle.borderLeft == BorderStyle.NONE
+        mergeMiddle.borderRight == BorderStyle.NONE
+        mergeMiddle.borderTop == BorderStyle.MEDIUM
+        mergeMiddle.borderBottom == BorderStyle.MEDIUM
 
-        mergeMiddle2.borderLeftEnum == BorderStyle.NONE
-        mergeMiddle2.borderRightEnum == BorderStyle.NONE
-        mergeMiddle2.borderTopEnum == BorderStyle.MEDIUM
-        mergeMiddle2.borderBottomEnum == BorderStyle.MEDIUM
+        mergeMiddle2.borderLeft == BorderStyle.NONE
+        mergeMiddle2.borderRight == BorderStyle.NONE
+        mergeMiddle2.borderTop == BorderStyle.MEDIUM
+        mergeMiddle2.borderBottom == BorderStyle.MEDIUM
 
-        mergeRight.borderLeftEnum == BorderStyle.NONE
-        mergeRight.borderTopEnum == BorderStyle.MEDIUM
-        mergeRight.borderRightEnum == BorderStyle.THICK
-        mergeRight.borderBottomEnum == BorderStyle.MEDIUM
+        mergeRight.borderLeft == BorderStyle.NONE
+        mergeRight.borderTop == BorderStyle.MEDIUM
+        mergeRight.borderRight == BorderStyle.THICK
+        mergeRight.borderBottom == BorderStyle.MEDIUM
 
-        style2.borderLeftEnum == BorderStyle.HAIR
-        style2.borderTopEnum == BorderStyle.MEDIUM
-        style2.borderRightEnum == BorderStyle.MEDIUM
-        style2.borderBottomEnum == BorderStyle.MEDIUM
-        style3.borderLeftEnum == BorderStyle.MEDIUM
-        style3.borderTopEnum == BorderStyle.MEDIUM
-        style3.borderRightEnum == BorderStyle.MEDIUM
-        style3.borderBottomEnum == BorderStyle.MEDIUM
-        style4.borderLeftEnum == BorderStyle.NONE
-        style4.borderTopEnum == BorderStyle.NONE
-        style4.borderRightEnum == BorderStyle.NONE
-        style4.borderBottomEnum == BorderStyle.NONE
+        style2.borderLeft == BorderStyle.HAIR
+        style2.borderTop == BorderStyle.MEDIUM
+        style2.borderRight == BorderStyle.MEDIUM
+        style2.borderBottom == BorderStyle.MEDIUM
+        style3.borderLeft == BorderStyle.MEDIUM
+        style3.borderTop == BorderStyle.MEDIUM
+        style3.borderRight == BorderStyle.MEDIUM
+        style3.borderBottom == BorderStyle.MEDIUM
+        style4.borderLeft == BorderStyle.NONE
+        style4.borderTop == BorderStyle.NONE
+        style4.borderRight == BorderStyle.NONE
+        style4.borderBottom == BorderStyle.NONE
     }
 
     void "test merging of options with columns"() {
         given:
-        SXSSFCell testCellTop
-        SXSSFCell testCellMiddle
-        SXSSFCell testCellMiddle2
-        SXSSFCell testCellBottom
-        SXSSFCell testCell2
-        SXSSFCell testCell3
-        SXSSFCell testCell4
+        XSSFCell testCellTop
+        XSSFCell testCellMiddle
+        XSSFCell testCellMiddle2
+        XSSFCell testCellBottom
+        XSSFCell testCell2
+        XSSFCell testCell3
+        XSSFCell testCell4
         ExcelBuilder.build {
             sheet {
                 defaultStyle([border: BorderStyle.MEDIUM])
@@ -738,42 +738,42 @@ class CellStyleBuilderSpec extends Specification {
         XSSFCellStyle style4 = testCell4.cellStyle //none
 
         then:
-        mergeTop.borderLeftEnum == BorderStyle.HAIR
-        mergeTop.borderTopEnum == BorderStyle.MEDIUM
-        mergeTop.borderRightEnum == BorderStyle.THICK
-        mergeTop.borderBottomEnum == BorderStyle.NONE
+        mergeTop.borderLeft == BorderStyle.HAIR
+        mergeTop.borderTop == BorderStyle.MEDIUM
+        mergeTop.borderRight == BorderStyle.THICK
+        mergeTop.borderBottom == BorderStyle.NONE
 
-        mergeMiddle.borderLeftEnum == BorderStyle.HAIR
-        mergeMiddle.borderRightEnum == BorderStyle.THICK
-        mergeMiddle.borderTopEnum == BorderStyle.NONE
-        mergeMiddle.borderBottomEnum == BorderStyle.NONE
+        mergeMiddle.borderLeft == BorderStyle.HAIR
+        mergeMiddle.borderRight == BorderStyle.THICK
+        mergeMiddle.borderTop == BorderStyle.NONE
+        mergeMiddle.borderBottom == BorderStyle.NONE
 
-        mergeMiddle2.borderLeftEnum == BorderStyle.HAIR
-        mergeMiddle2.borderRightEnum == BorderStyle.THICK
-        mergeMiddle2.borderTopEnum == BorderStyle.NONE
-        mergeMiddle2.borderBottomEnum == BorderStyle.NONE
+        mergeMiddle2.borderLeft == BorderStyle.HAIR
+        mergeMiddle2.borderRight == BorderStyle.THICK
+        mergeMiddle2.borderTop == BorderStyle.NONE
+        mergeMiddle2.borderBottom == BorderStyle.NONE
 
-        mergeBottom.borderLeftEnum == BorderStyle.HAIR
-        mergeBottom.borderTopEnum == BorderStyle.NONE
-        mergeBottom.borderRightEnum == BorderStyle.THICK
-        mergeBottom.borderBottomEnum == BorderStyle.MEDIUM
+        mergeBottom.borderLeft == BorderStyle.HAIR
+        mergeBottom.borderTop == BorderStyle.NONE
+        mergeBottom.borderRight == BorderStyle.THICK
+        mergeBottom.borderBottom == BorderStyle.MEDIUM
 
-        style2.borderLeftEnum == BorderStyle.HAIR
-        style2.borderTopEnum == BorderStyle.MEDIUM
-        style2.borderRightEnum == BorderStyle.MEDIUM
-        style2.borderBottomEnum == BorderStyle.MEDIUM
-        style3.borderLeftEnum == BorderStyle.MEDIUM
-        style3.borderTopEnum == BorderStyle.MEDIUM
-        style3.borderRightEnum == BorderStyle.MEDIUM
-        style3.borderBottomEnum == BorderStyle.MEDIUM
-        style4.borderLeftEnum == BorderStyle.NONE
-        style4.borderTopEnum == BorderStyle.NONE
-        style4.borderRightEnum == BorderStyle.NONE
-        style4.borderBottomEnum == BorderStyle.NONE
+        style2.borderLeft == BorderStyle.HAIR
+        style2.borderTop == BorderStyle.MEDIUM
+        style2.borderRight == BorderStyle.MEDIUM
+        style2.borderBottom == BorderStyle.MEDIUM
+        style3.borderLeft == BorderStyle.MEDIUM
+        style3.borderTop == BorderStyle.MEDIUM
+        style3.borderRight == BorderStyle.MEDIUM
+        style3.borderBottom == BorderStyle.MEDIUM
+        style4.borderLeft == BorderStyle.NONE
+        style4.borderTop == BorderStyle.NONE
+        style4.borderRight == BorderStyle.NONE
+        style4.borderBottom == BorderStyle.NONE
     }
 
     void "test number of styles created"() {
-        SXSSFWorkbook workbook = ExcelBuilder.build {
+        XSSFWorkbook workbook = ExcelBuilder.build {
             sheet {
                 row {
                     merge([font: [color: Color.YELLOW], border: [style: BorderStyle.DOTTED, color: Color.RED, left: [color: Color.BLUE], right: [style: BorderStyle.DASHED], bottom: [color: '7900bf'], top: [color: '#2AB54A']]]) {

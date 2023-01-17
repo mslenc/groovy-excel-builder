@@ -14,8 +14,8 @@ apply plugin: 'codenarc'
 apply plugin: "jacoco"
 
 
-group 'com.jameskleeh'
-version '1.0.0.BUILD-SNAPSHOT'
+group 'com.github.mslenc'
+version '1.1.0'
 
 targetCompatibility = 1.8
 sourceCompatibility = 1.8
@@ -31,9 +31,9 @@ repositories {
 }
 
 dependencies {
-    provided 'org.codehaus.groovy:groovy:2.5.8'
+    provided 'org.codehaus.groovy:groovy:2.5.14'
     documentation 'org.codehaus.groovy:groovy-templates:2.5.8'
-    compile "org.apache.poi:poi-ooxml:4.1.0"
+    compile "org.apache.poi:poi-ooxml:5.2.3"
     codenarc 'org.codenarc:CodeNarc:1.4'
     testCompile 'org.codehaus.groovy:groovy-dateutil:2.5.8'
     testCompile 'org.spockframework:spock-core:1.2-groovy-2.5'
